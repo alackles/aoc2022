@@ -1,2 +1,3 @@
-# aoc2023
-Advent of Code 2023 in Python
+# Advent of Code 2022
+
+[Advent of Code 2022](https://adventofcode.com/) in Python!
