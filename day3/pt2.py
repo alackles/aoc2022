@@ -10,10 +10,8 @@ def unicode_to_int(c):
 with open("input.txt") as f:
     lines = [line.strip() for line in f.readlines()]
     for i in range(0, len(lines), 3):
-        group = lines[i:i+3]
-        unique = "".join(["".join(set(s)) for s in group])
-        full = "".join(sorted(unique))
-        dupl = re.search(r"([a-zA-z])\1\1", full).groups()[0]
+        group = [set(line) for line in lines[i:i+3]]
+        dupl = (group[0].intersection(group[1])).intersection(group[2]).pop()
         numsum += unicode_to_int(dupl)
 
 print(numsum)

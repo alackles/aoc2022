@@ -11,9 +11,7 @@ with open("input.txt") as f:
     for line in f.readlines():
         line = line.strip()
         n = int(len(line)/2)
-        unique = "".join(set(line[:n])) + "".join(set(line[n:]))
-        full = "".join(sorted(unique))
-        dupl = re.search(r"([a-zA-z])\1", full).groups()[0]
+        dupl = (set(line[:n]) & set(line[n:])).pop()
         numsum += unicode_to_int(dupl)
 
 print(numsum)
