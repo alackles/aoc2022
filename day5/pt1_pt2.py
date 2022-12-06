@@ -47,5 +47,5 @@ with open("input.txt") as f:
 
 stacks = read_crates(crates)
 dirs = read_directions(directions)
-move_crates(stacks, dirs)
+move_crates(stacks, dirs) # add cratemover9001=False as optional parameter to do part 1
 get_top(stacks)
