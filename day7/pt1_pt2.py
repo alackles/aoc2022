@@ -55,6 +55,7 @@ def parse_cmd(filename):
     return filestruct
 
 
+# pt 1
 def find_size(filestruct, maxsize=100000):
     full_sum = 0
     for v in filestruct.values():
@@ -62,5 +63,17 @@ def find_size(filestruct, maxsize=100000):
             full_sum += v.size
     return full_sum
 
+def space_needed(filestruct, maxsize=70000000, need=30000000):
+    return need - (maxsize - filestruct["/"].size)
+
+# pt 2
+def find_smallest(filestruct, space):
+    minsize = filestruct["/"].size
+    for v in filestruct.values():
+        if v.size < minsize and v.size > space:
+            minsize = v.size
+    return minsize
+
 filestruct = parse_cmd("input.txt")
-print(find_size(filestruct))
+space = space_needed(filestruct)
+print(find_smallest(filestruct, space))
