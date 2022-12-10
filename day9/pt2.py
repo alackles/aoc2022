@@ -46,29 +46,36 @@ class Rope:
             self.tail.y += 1
         elif self.head.bottom_of(self.tail):
             self.tail.y -= 1
+        self.visited.add((self.tail.x, self.tail.y))
         
 
-    def move_head(self, dir, dist):
-        for _ in range(dist):
-            match dir:
-                case "R":
-                    self.head.x += 1
-                case "L":
-                    self.head.x -= 1
-                case "U":
-                    self.head.y += 1
-                case "D":
-                    self.head.y -= 1
-            self.move_tail()
-            self.visited.add((self.tail.x, self.tail.y))
-
+    def move_head(self, dir):
+        match dir:
+            case "R":
+                self.head.x += 1
+            case "L":
+                self.head.x -= 1
+            case "U":
+                self.head.y += 1
+            case "D":
+                self.head.y -= 1
 
 with open("input.txt") as f:
-    rope = Rope(0, 0)
+    ropechain = [Rope(0, 0) for _ in range(9)]
     for line in f.readlines():
         dir, dist = line.strip().split()
-        rope.move_head(dir, int(dist))
+        for _ in range(int(dist)):
+            ropechain[0].move_head(dir)
+            ropechain[0].move_tail()
+            
+            for i in range(1, len(ropechain)):
+                # move the head of the next rope chain to the tail of the last rope chain
+                ropechain[i].head.x = ropechain[i-1].tail.x
+                ropechain[i].head.y = ropechain[i-1].tail.y
+                # move the rope's tail accordingly
+                ropechain[i].move_tail()
+            
 
-print(len(rope.visited))
+print(len(ropechain[-1].visited))
 
 
