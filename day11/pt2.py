@@ -2,8 +2,9 @@ import re
 
 class Group:
 
-    def __init__(self, group):
-        self.group = group
+    def __init__(self):
+        self.group = []
+        self.mod = 1
 
     def do_round(self):
         for monkey in self.group:
@@ -11,9 +12,8 @@ class Group:
                 old = monkey.q.pop(0)
                 monkey.count += 1
                 new = monkey.oper(old)
-                new = new//3
                 dest = monkey.dest(new)
-                self.group[dest].q.append(new)
+                self.group[dest].q.append(new % self.mod)
     
     def monkey_business(self):
         top = ([monkey.count for monkey in sorted(self.group, reverse=True)])
@@ -68,12 +68,18 @@ def parseblock(block):
     f = re.search(r"\d+", fline).group(0)
     monkey = Monkey(id, q)
     monkey.set(op, [int(mod), int(t), int(f)])
-    return monkey
+    return monkey, int(mod)
 
-with open("toy.txt") as f:
-    group = Group([parseblock(monkey) for monkey in f.read().split("\n\n")])
+with open("input.txt") as f:
+    group = Group()
+    modsum = 1
+    for block in f.read().split("\n\n"):
+        monkey, mod = parseblock(block)
+        group.group.append(monkey)
+        modsum *= mod
+    group.mod = modsum
 
-for _ in range(20):
+for _ in range(10000):
     group.do_round()
 
 print(group.monkey_business())
